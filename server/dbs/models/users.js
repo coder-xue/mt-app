@@ -1,5 +1,5 @@
 import mongoose from 'mongoose'
-const Schema = new Schema
+const Schema = mongoose.Schema
 const UserSchema = new Schema({
   username: {
     type: String,

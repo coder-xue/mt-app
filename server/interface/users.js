@@ -6,7 +6,7 @@ import Passport from './utils/passport'
 import Email from '../dbs/config'
 import axios from './utils/axios'
 
-const router = new router({
+const router = new Router({
   prefix: '/users'
 })
 
@@ -92,6 +92,7 @@ router.post('/signin', async (ctx, next) => {
           msg: '登陆成功',
           user
         }
+        // passport 封装的方法
         return ctx.login(user)
       } else {
         // 异常
@@ -159,7 +160,7 @@ router.post('/verify', async(ctx, next) => {
  * 退出登陆接口
  */
 router.get('/exit', async (ctx, next) => {
-  // 注销
+  // 注销   passport 封装的方法
   await ctx.logout() 
   // 检查是否登陆状态
   if (!ctx.isAuthenticated()) {

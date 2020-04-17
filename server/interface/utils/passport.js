@@ -19,10 +19,12 @@ passport.use(new LocalStrategy(async function(username,password,done){
   }
 }))
 
+// 序列化 序列化指的是把用户对象存到session里
 passport.serializeUser(function(user,done){
   done(null,user)
 })
 
+// 反序列化 反序列化就是从session里取用户数据
 passport.deserializeUser(function(user,done){
   return done(null,user)
 })
