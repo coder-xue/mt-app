@@ -103,3 +103,54 @@ router.post('/signin', async (ctx, next) => {
     }
   })(ctx, next)
 })
+
+/**
+ * 验证码接口
+ */
+router.post('/verify', async(ctx, next) => {
+  let username = ctx.request.body.username
+  const saveExpire = await Store.hget(`nodemail:${username}`,'expire')
+  if (saveExpire && new Date().getTime() - saveExpire < 0) {
+    ctx.body = {
+      code: -1,
+      msg: '验证请求过于频繁，1分钟内1次'
+    }
+    return false
+  }
+  let transporter = nodeMailer.createTransport({
+    service: 'qq',
+    auth: {
+      user: Email.smtp.user,
+      pass: Email.smtp.pass,
+    }
+  })
+  // 接收
+  let ko = {
+    code: Email.smtp.code(),
+    expire: Email.smtp.expire(),
+    email: ctx.request.body.email,
+    user: ctx.request.body.user
+  }
+
+  // 邮件配置信息
+  let mailOptions = {
+    from: `"认证邮件"<${Email.smtp.user}>`,
+    to: ko.email,
+    subject: '《慕课网高仿美团网全栈实战》注册码',
+    html: `您在《慕课网高仿美团网全栈实战》课程中注册，您的邀请码是${ko.code}`
+  }
+
+  // 发送邮件
+  await transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      return console.log(error)
+    } else {
+      Store.hset(`nodemail:${ko.user}`, 'code', ko.code, 'expire', ko.expire, 'email', ko.email)
+    }
+  })
+
+  ctx.body = {
+    code: 0,
+    msg: '验证码已发送，可能会有延时，有效期1分钟'
+  }
+})
