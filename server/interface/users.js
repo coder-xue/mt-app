@@ -12,11 +12,14 @@ const router = new router({
 
 let Store = new Redis().client
 
+/**
+ * 注册
+ */
 router.post('/signup', async (ctx) => {
-  const {username, password, email, code} = ctx.request.body
+  const {username, password, email, code} = ctx.request.body // 从请求中拿数据
   if (code) {
-    const saveCode = await Store.hget(`nodemail:${username}`, 'code')
-    const saveExpire = await Store.hget(`nodemail:${username}`, 'expire')
+    const saveCode = await Store.hget(`nodemail:${username}`, 'code') // 从redis数据库读取验证码
+    const saveExpire = await Store.hget(`nodemail:${username}`, 'expire') // 读取验证码过期时间
     if (code === saveCode) {
       if (new Date().getTime() - saveExpire > 0) {
         ctx.body = {
@@ -50,7 +53,7 @@ router.post('/signup', async (ctx) => {
   })
   // 判断是否写入成功
   if (nuser) {
-    let res = await axios.post('/users/signin', {username, password})
+    let res = await axios.post('/users/signin', {username, password}) 
     if (res.data && res.data.code === 0) {
       ctx.body = {
         code: 0,
@@ -69,4 +72,34 @@ router.post('/signup', async (ctx) => {
       msg: '注册失败'
     }
   }
+})
+
+/**
+ * 登陆
+ */
+router.post('/signin', async (ctx, next) => {
+  // 使用passport的local策略, 下面是固定写法
+  return Passport.authenticate('local', function(err, user, info, status) {
+    if (err) {
+      ctx.body = {
+        code: -1,
+        msg: err
+      }
+    } else {
+      if (user) {
+        ctx.body = {
+          code: 0,
+          msg: '登陆成功',
+          user
+        }
+        return ctx.login(user)
+      } else {
+        // 异常
+        ctx.body = {
+          code: 1,
+          msg: info
+        }
+      }
+    }
+  })(ctx, next)
 })
