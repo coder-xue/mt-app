@@ -182,7 +182,7 @@ router.get('/exit', async (ctx, next) => {
  */
 router.get('/getUser', async (ctx, next) => {
   // ctx.isAuthenticated()  passport 提供的api, 检查是否登陆状态
-  if (!ctx.isAuthenticated()) {
+  if (ctx.isAuthenticated()) {
     // passport 会把用户信息的session 放到ctx对象中， passport 是存储在session中的
     const {username,email} = ctx.session.passport.user
     ctx.body = {
