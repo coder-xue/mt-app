@@ -154,3 +154,21 @@ router.post('/verify', async(ctx, next) => {
     msg: '验证码已发送，可能会有延时，有效期1分钟'
   }
 })
+
+/**
+ * 退出登陆接口
+ */
+router.get('/exit', async (ctx, next) => {
+  // 注销
+  await ctx.logout() 
+  // 检查是否登陆状态
+  if (!ctx.isAuthenticated()) {
+    ctx.body = {
+      code: 0
+    }
+  } else {
+    ctx.body = {
+      code: -1
+    }
+  }
+})
