@@ -192,7 +192,7 @@ export default {
             }
             setTimeout(() => {
               self.error = ''
-            }, 1500);
+            }, 1500)
           })
         }
       })
