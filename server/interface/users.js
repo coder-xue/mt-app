@@ -33,12 +33,14 @@ router.post('/signup', async (ctx) => {
         code: -1,
         msg: '请填写正确的验证码'
       }
+      return false
     }
   } else {
     ctx.body = {
       code: -1,
       msg: '请填写验证码'
     }
+    return false
   }
   let user = await User.find({username})
   if (user.length) {
@@ -46,6 +48,7 @@ router.post('/signup', async (ctx) => {
       code: -1,
       msg: '账号已被注册'
     }
+    return false
   }
   // 写入数据库
   let nuser = await User.create({

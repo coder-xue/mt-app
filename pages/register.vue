@@ -159,9 +159,9 @@ export default {
           if (status === 200 && data && data.code === 0) {
             let count = 60
             self.statusMsg = `验证码已发送,剩余${count--}秒`
-            setInterval(() => {
+            self.timerid = setInterval(() => {
             self.statusMsg = `验证码已发送,剩余${count--}秒`
-            if (count === 0) {
+            if (count === -1) {
               clearInterval(self.timerid)
             }
             }, 1000)
