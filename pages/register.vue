@@ -127,7 +127,52 @@ export default {
   },
   layout: 'blank',
   methods: {
+    sendMsg () {
+      const self = this
+      let namePass
+      let emailPass
+      if (self.timerid) {
+        return false
+      }
+      // 校验名字
+      this.$refs['ruleForm'].validateField('name', valid => {
+        namePass = valid
+      })
+      self.statusMsg = ''
+      if (namePass) {
+        return false
+      }
+      // 校验邮箱
+      this.$refs['ruleForm'].validateField('email', valid => {
+        emailPass = valid
+      })
+      if (!namePass && !emailPass) {
+        // 这里能直接用axios是因为在nuxt.config.js文件中配置了axios,会直接挂载到vue实例中
+        self.$axios.post('/users/verify', {
+          username: encodeURIComponent(self.ruleForm.name), // 对中文进行编码
+          email: self.ruleForm.email
+        }).then(({
+          data,
+          status
+        }) => {
+          if (status === 200 && data && data.code === 0) {
+            let count = 60
+            self.statusMsg = `验证码已发送,剩余${count--}秒`
+            setInterval(() => {
+            self.statusMsg = `验证码已发送,剩余${count--}秒`
+            if (count === 0) {
+              clearInterval(self.timerid)
+            }
+            }, 1000);
+          } else {
+            self.statusMsg = data.msg
+          }
+        })
+      }
+    },
+    register () {
 
+    }
   }
   
 }

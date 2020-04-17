@@ -70,7 +70,7 @@ async function start () {
   /**
    * 使用路由
    */
-  app.use(users.routers()).use(users.allowedMethods())
+  app.use(users.routes()).use(users.allowedMethods())
 
   app.use((ctx) => {
     ctx.status = 200
