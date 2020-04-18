@@ -95,7 +95,7 @@ router.post('/signin', async (ctx, next) => {
           msg: '登陆成功',
           user
         }
-        // passport 封装的方法
+        // passport 封装的方法 在redis修改登录状态
         return ctx.login(user)
       } else {
         // 异常
@@ -133,7 +133,7 @@ router.post('/verify', async(ctx, next) => {
     code: Email.smtp.code(),
     expire: Email.smtp.expire(),
     email: ctx.request.body.email,
-    user: ctx.request.body.user
+    user: ctx.request.body.username
   }
 
   // 邮件配置信息
@@ -163,7 +163,7 @@ router.post('/verify', async(ctx, next) => {
  * 退出登陆接口
  */
 router.get('/exit', async (ctx, next) => {
-  // 注销   passport 封装的方法
+  // 注销   passport 封装的方法   修改redis状态，让cookie失效
   await ctx.logout() 
   // 检查是否登陆状态
   if (!ctx.isAuthenticated()) {
