@@ -10,7 +10,7 @@
     </el-row>
     <el-row >
       <el-col :span="24">
-        <!-- <artistic/> -->
+        <artistic/>
       </el-col>
     </el-row>
   </div>
@@ -19,14 +19,14 @@
 <script>
 import Emenu from '@/components/index/menu.vue'
 import Life from '@/components/index/life.vue'
-// import Artistic from '@/components/index/artistic.vue'
+import Artistic from '@/components/index/artistic.vue'
 // import axios from '../server/interface/utils/axios'
 
 export default {
   components: {
     Emenu,
     Life,
-    // Artistic
+    Artistic
   },
 
   // 刷新页面的时候不再执行

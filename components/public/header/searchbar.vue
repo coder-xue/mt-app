@@ -24,7 +24,7 @@
             v-if="isHotPlace"
             class="hotPlace">
             <dt>热门搜索</dt>
-            <dd v-for="(item, idx) of hotPlace" :key="idx">{{ item }}</dd>
+            <dd v-for="(item, idx) of $store.state.home.hotPlace.slice(0,5)" :key="idx">{{ item.name }}</dd>
           </dl>
           <dl
             v-if="isSearchList"
@@ -33,12 +33,10 @@
           </dl>
         </div>
         <p class="suggest">
-          <a href="#">故宫博物馆</a>
-          <a href="#">故宫博物馆</a>
-          <a href="#">故宫博物馆</a>
-          <a href="#">故宫博物馆</a>
-          <a href="#">故宫博物馆</a>
-          <a href="#">故宫博物馆</a>
+          <a
+            v-for="(item,idx) in $store.state.home.hotPlace.slice(0,5)"
+            :key="idx"
+            >{{ item.name }}</a>
         </p>
         <ul class="nav">
           <li><nuxt-link
@@ -72,6 +70,8 @@
 </template>
 
 <script>
+import _ from 'lodash'
+
 export default {
   data () {
     return {
@@ -99,9 +99,18 @@ export default {
         self.isFocus = false
       }, 200)
     },
-    input (val) {
-      console.log(val)
-    }
+    input: _.debounce(async function(){
+      let self=this
+      let city=self.$store.state.geo.position.city.replace('市','')
+      self.searchList=[]
+      let {status,data:{top}}=await self.$axios.get('/search/top',{
+        params:{
+          input:self.search,
+          city
+        }
+      })
+      self.searchList=top.slice(0,10)
+    },300)
   }
 }
 </script>

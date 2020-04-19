@@ -25,8 +25,8 @@
     </dl>
     <ul class="ibody">
       <li
-        v-for="item in cur"
-        :key="item.title">
+        v-for="(item,index) in cur"
+        :key="index">
         <el-card
           :body-style="{ padding: '0px' }"
           shadow="never">
