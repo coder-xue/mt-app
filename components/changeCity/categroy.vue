@@ -40,7 +40,6 @@ export default {
       let c
       let d={}
       city.forEach(item=>{
-        console.log(555, item.name);
         
         p=pyjs.getFullChars(item.name).toLocaleLowerCase().slice(0,1)
         c=p.charCodeAt(0)
@@ -49,11 +48,9 @@ export default {
             d[p]=[]
           }
           d[p].push(item.name)
-          console.log(7777, d[p]);
           
         }
       })
-      console.log(1111, d,999, p, 222, d[p], 333, Object.entries(d))
       for(let [k,v] of Object.entries(d)){
         blocks.push({
           title:k.toUpperCase(),

@@ -24,18 +24,23 @@
             v-if="isHotPlace"
             class="hotPlace">
             <dt>热门搜索</dt>
-            <dd v-for="(item, idx) of $store.state.home.hotPlace.slice(0,5)" :key="idx">{{ item.name }}</dd>
+            <dd v-for="(item, idx) of $store.state.home.hotPlace.slice(0,5)" :key="idx">
+              <a :href="'/products?keyword=' + encodeURIComponent(item.name)"></a>
+            </dd>
           </dl>
           <dl
             v-if="isSearchList"
             class="searchList">
-            <dd v-for="(item, idx) of searchList" :key="idx">{{ item   }}</dd>
+            <dd v-for="(item, idx) of searchList" :key="idx">
+              <a :href="'/products?keyword=' + encodeURIComponent(item.name)"></a>
+            </dd>
           </dl>
         </div>
         <p class="suggest">
           <a
             v-for="(item,idx) in $store.state.home.hotPlace.slice(0,5)"
             :key="idx"
+            :href="'/products?keyword=' + encodeURIComponent(item.name)"
             >{{ item.name }}</a>
         </p>
         <ul class="nav">

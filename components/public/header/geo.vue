@@ -1,7 +1,7 @@
 <template>
   <div class="m-geo">
     <!-- {{position.city}} -->
-    <i class="el-icon-location"></i>{{currentCity || $store.state.geo.position.city}} 
+    <i class="el-icon-location"></i>{{$store.state.geo.position.city}} 
     <nuxt-link
       class="changeCity"
       to="/changeCity">切换城市</nuxt-link>
@@ -27,9 +27,9 @@ export default {
     // })
 
   },
-  mounted () {
-    this.currentCity = localStorage.getItem('currentCity')
-  },
+  // mounted () {
+  //   this.currentCity = localStorage.getItem('currentCity')
+  // },
 
 }
 </script>
