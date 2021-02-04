@@ -44,7 +44,8 @@ app.use(json())
  * mongoose 数据库连接
  */
 mongoose.connect(dbConfig.dbs, {
-  useNewUrlParser: true
+  useNewUrlParser: true,
+  useUnifiedTopology: true
 })
 
 /**

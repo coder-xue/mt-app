@@ -1,6 +1,12 @@
-const state = {
-  menu: [],
-  hotPlace: []
+// const state = {
+//   menu: [],
+//   hotPlace: []
+// }
+const state = () => {
+  return {
+    menu: [],
+    hotPlace: []
+  }
 }
 
 const mutations = {
